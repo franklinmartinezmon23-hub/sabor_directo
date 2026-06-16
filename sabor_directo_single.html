@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sabor Directo - Panel de Gestión Operativa</title>
+    <!-- Tailwind CSS (CDN with standard configuration) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet"/>
+    
+    <style>
+        /* 
+           Consistencia Visual:
+           Utiliza variables CSS para los colores principales (#A11548, #10B581, #F6B828) 
+           para asegurar que el diseño sea uniforme.
+        */
+        :root {
+            --color-primary: #A11548;   /* Sabor Directo Burgundy */
+            --color-success: #10B581;   /* Mint Green */
+            --color-warning: #F6B828;   /* Autumn Gold */
+            --color-bg: #f8f9ff;
+            --color-text: #0b1c30;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+            font-size: 24px;
+        }
+
+        /* Active color variables usage */
+        .theme-primary-bg { background-color: var(--color-primary); }
+        .theme-primary-text { color: var(--color-primary); }
+        .theme-primary-border { border-color: var(--color-primary); }
+
+        .theme-success-bg { background-color: var(--color-success); }
+        .theme-success-text { color: var(--color-success); }
+
+        .theme-warning-bg { background-color: var(--color-warning); }
+        .theme-warning-text { color: var(--color-warning); }
+
+        /* Smoother transition */
+        .transition-route {
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .hidden-screen {
+            display: none !important;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sabor: {
+                            primary: '#A11548',
+                            success: '#10B581',
+                            warning: '#F6B828',
+                            navy: '#0b1c30',
+                            slate: '#545f73',
+                            bg: '#f8f9ff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-sabor-bg text-sabor-navy min-h-screen flex flex-col pb-24 md:pb-6">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-full bg-pink-50 text-sabor-primary md:hidden">
+                    <span class="material-symbols-outlined">menu_open</span>
+                </div>
+                <!-- Sabor Directo Header -->
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-3xl text-sabor-primary font-bold">restaurant_menu</span>
+                    <h1 class="font-bold text-xl tracking-tight text-sabor-primary flex items-center gap-1">
+                        Sabor <span class="text-sabor-navy font-extrabold text-sabor-success">Directo</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-sabor-success">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sabor-success animate-ping"></span>
+                    Terminal Activa
+                </span>
+                
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sabor-primary/30">
+                    <img alt="Administrador" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjavaB2caYJC_-FwA7p9atNhvHyDCp4g8ldF-selbg_Wx3sjbiu_iuG5iAH6leDU5LFwSGrvJvh5t0F7ATyV-1RaexH1iFHIuSraSoWMuppUK5rqVLGhThkiL5zgk67-vH2-gOodKsqAktIg0VpkrOnTan5D0lqiTh3iTbtkE13glzBya7YlNZRP8-ZefBmr97TjahfiiE2VrUVh9lpMst2B_auQJCqJIdqVNhaGx18U4n7ZBcFkDYk-dk4A8x65i7vkazSdi81woh" referrerPolicy="no-referrer"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-grow">
+
+        <!-- ========================================== -->
+        <!-- SCREEN 1: DASHBOARD CONTAINER              -->
+        <!-- ========================================== -->
+        <div id="screen-dashboard" class="transition-route space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-sabor-navy">Panel de Control</h2>
+                    <p class="text-sm text-sabor-slate">Resumen operativo y cumplimiento del objetivo diario en vivo.</p>
+                </div>
+                <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 text-sm font-medium">
+                    <span class="material-symbols-outlined text-sabor-primary">calendar_today</span>
+                    <span id="fecha-actual">HOY, 14 JUN 2026</span>
+                </div>
+            </div>
+
+            <!-- Bento Objective Card (Large) -->
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg text-sabor-navy mb-1">Métricas de Rendimiento</h3>
+                        <p class="text-sm text-sabor-slate">Mantén el ritmo para cumplir con el compromiso del Sabor.</p>
+                    </div>
+                    <div class="text-right">
+                        <!-- Goal Progress Percent -->
+                        <span id="porcentaje-progreso" class="text-3xl font-black text-sabor-primary transition-all duration-300 block">0%</span>
+                        <span class="text-xs font-bold text-sabor-slate uppercase tracking-wider">CUMPLIMIENTO</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Progress Bar Background -->
+                <div class="w-full bg-gray-100 h-4 rounded-full mb-3 overflow-hidden p-0.5">
+                    <div id="barra-progreso" class="h-full rounded-full transition-all duration-700 ease-out bg-red-600 w-0"></div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <span id="comandas-completas-texto" class="text-sm font-semibold text-sabor-navy">
+                        0 de 48 comandas finalizadas
+                    </span>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-sabor-success">
+                        <span class="material-symbols-outlined text-sm">trending_up</span>
+                        <span>Eficiencia en aumento</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Stat 1: Pedidos Totales -->
+                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 transition hover:shadow-md">
+                    <div class="p-3 bg-red-50 text-sabor-primary rounded-xl">
+                        <span class="material-symbols-outlined text-2xl">receipt_long</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase tracking-wider">Pedidos Totales</p>
+                        <p id="stat-pedidos-totales" class="text-2xl font-black text-sabor-navy">0</p>
+                    </div>
+                </div>
+
+                <!-- Stat 2: Finalizados -->
+                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 transition hover:shadow-md">
+                    <div class="p-3 bg-emerald-50 text-sabor-success rounded-xl">
+                        <span class="material-symbols-outlined text-2xl">check_circle</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase tracking-wider">Entregados / Listos</p>
+                        <p id="stat-pedidos-finalizados" class="text-2xl font-black text-sabor-success">0</p>
+                    </div>
+                </div>
+
+                <!-- Stat 3: A domicilio -->
+                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 transition hover:shadow-md">
+                    <div class="p-3 bg-amber-50 text-sabor-warning rounded-xl">
+                        <span class="material-symbols-outlined text-2xl">delivery_dining</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase tracking-wider">A Domicilio</p>
+                        <p id="stat-a-domicilio" class="text-2xl font-black text-sabor-navy">0</p>
+                    </div>
+                </div>
+
+                <!-- Stat 4: Para recoger -->
+                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 transition hover:shadow-md">
+                    <div class="p-3 bg-pink-50 text-pink-600 rounded-xl">
+                        <span class="material-symbols-outlined text-2xl">shopping_bag</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase tracking-wider">Para Recoger</p>
+                        <p id="stat-para-recoger" class="text-2xl font-black text-sabor-navy">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Split Panel: Quick Control Panel + Recientes -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left: Config / Ajuste de Meta -->
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-sabor-navy mb-2">Meta Diaria</h3>
+                        <p class="text-sm text-sabor-slate mb-4">
+                            Regula el volumen requerido para calcular el porcentaje de cumplimiento en tiempo real.
+                        </p>
+                        
+                        <div class="space-y-3">
+                            <label class="block text-xs font-bold text-sabor-slate uppercase">Establecer Objetivo Diario</label>
+                            <div class="flex gap-2">
+                                <input id="input-objetivo-diario" type="number" min="1" value="48" class="form-input flex-grow rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary py-2 px-3 text-sm font-bold text-sabor-navy"/>
+                                <button id="btn-actualizar-objetivo" class="bg-sabor-primary hover:bg-red-800 text-white font-bold text-sm px-4 py-2 rounded-lg transition">
+                                    Aplicar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 space-y-2 text-xs text-sabor-slate italic">
+                        <p>💡 <span class="font-bold">Para desarrolladores:</span> El objetivo se gestiona a través del objeto <code>estadoApp.objetivoDiario</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Right: Recent Activities (Dynamic List) -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-sabor-navy">Historial Operativo Reciente</h3>
+                        <span class="text-xs font-bold text-sabor-primary">En tiempo real</span>
+                    </div>
+                    
+                    <div id="historial-actividad" class="divide-y divide-gray-100">
+                        <!-- Activity Rows inserted here via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 2: REGISTRO / CLIENTES CONTAINER    -->
+        <!-- ========================================== -->
+        <div id="screen-menu" class="transition-route hidden-screen space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-sabor-navy">Gestión de Clientes</h2>
+                    <p class="text-sm text-sabor-slate">Monitorea y administra tu base de datos de consumidores frecuentes.</p>
+                </div>
+                <div class="relative w-full md:w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-sabor-slate text-sm">search</span>
+                    <input id="search-clientes" type="text" placeholder="Buscar clientes..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 focus:border-sabor-success focus:ring-sabor-success bg-white text-sm outline-none transition"/>
+                </div>
+            </div>
+
+            <!-- Bento Card Metrics for Customers -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined p-2.5 bg-green-50 text-sabor-success rounded-lg">group</span>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase">Vips Activos</p>
+                        <p class="text-lg font-extrabold text-sabor-navy">82</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined p-2.5 bg-amber-50 text-sabor-warning rounded-lg">trending_up</span>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase">Nuevos del mes</p>
+                        <p class="text-lg font-extrabold text-sabor-navy">+45</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined p-2.5 bg-pink-50 text-sabor-primary rounded-lg">analytics</span>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase">Pedidos Promedio</p>
+                        <p class="text-lg font-extrabold text-sabor-navy">3.4 al mes</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined p-2.5 bg-blue-50 text-blue-600 rounded-lg">id_card</span>
+                    <div>
+                        <p class="text-xs font-bold text-sabor-slate uppercase">Total Registrados</p>
+                        <p class="text-lg font-extrabold text-sabor-navy">1,284</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer List -->
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="p-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
+                    <span class="font-bold text-sm text-sabor-navy">Lista de Comensales VIP / Habituales</span>
+                    <button onclick="routerSwitch('pedidos')" class="text-xs font-bold text-sabor-primary hover:underline">Gestionar Pedido ▸</button>
+                </div>
+                <div class="divide-y divide-gray-150" id="lista-clientes-body">
+                    <!-- Clientes renderizados aquí via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 3: PEDIDOS ACTIVOS CONTAINER        -->
+        <!-- ========================================== -->
+        <div id="screen-metricas" class="transition-route hidden-screen space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-sabor-navy flex items-center gap-2">
+                        <span>Gestión de Pedidos Activos</span>
+                    </h2>
+                    <p class="text-sm text-sabor-slate">Comandas activas que disminuyen o aumentan los contadores del Dashboard.</p>
+                </div>
+                <!-- Action bar -->
+                <div class="flex items-center gap-2">
+                    <button onclick="document.getElementById('modal-nuevo-pedido').style.display='flex';" class="bg-sabor-primary hover:bg-red-800 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-1">
+                        <span class="material-symbols-outlined">add</span>
+                        <span>Nuevo Pedido</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info banner -->
+            <div class="bg-blue-50/50 border-l-4 border-blue-600 p-4 rounded-xl text-xs flex gap-3 text-blue-900 shadow-sm">
+                <span class="material-symbols-outlined text-blue-600">info</span>
+                <div>
+                     <span class="font-bold">Interactividad requerida:</span> Podrás eliminar o completar elementos de la lista desde sus botones de acción. Los contadores del Dashboard se actualizarán instantáneamente sin recargar la página.
+                </div>
+            </div>
+
+            <!-- Pedidos Bento-ish Grid -->
+            <div id="contenedor-pedidos-activos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tarjetas de pedido representadas dinámicamente -->
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 4: COCINA ACTIVA CONTAINER          -->
+        <!-- ========================================== -->
+        <div id="screen-ajustes" class="transition-route hidden-screen space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-sabor-navy">Gestión de Cocina</h2>
+                    <p class="text-sm text-sabor-slate">Control de preparación interna del chef. Sincroniza al instante con el tablero central.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="imprimirComandas()" class="bg-sabor-navy hover:bg-gray-800 text-white font-bold text-sm px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-sm border border-gray-700">
+                        <span class="material-symbols-outlined text-sm">print</span>
+                        <span>Imprimir Comandas</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid de Cocina -->
+            <div id="contenedor-cocina" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Se inyectarán comanda de cocina dinámicamente -->
+            </div>
+
+            <!-- Operational Flow Visual Details -->
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-4">
+                <h3 class="font-bold text-lg text-sabor-navy">Flujo de Producción de Alimentos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                        <span class="w-6 h-6 bg-sabor-primary text-white text-xs font-bold rounded-full flex items-center justify-center shrink-0">1</span>
+                        <p class="text-xs text-sabor-slate"><span class="font-bold text-sabor-navy">Recepción:</span> Los pedidos ingresados por los dependientes ingresan al tablero de Cocina en tiempo real.</p>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                        <span class="w-6 h-6 bg-sabor-success text-white text-xs font-bold rounded-full flex items-center justify-center shrink-0">2</span>
+                        <p class="text-xs text-sabor-slate"><span class="font-bold text-sabor-navy">Ejecución:</span> El Chef marca "Completado", lo cual aumenta automáticamente el contador de pedidos de cumplimiento.</p>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                        <span class="w-6 h-6 bg-sabor-warning text-white text-xs font-bold rounded-full flex items-center justify-center shrink-0">3</span>
+                        <p class="text-xs text-sabor-slate"><span class="font-bold text-sabor-navy">Reparto:</span> Se deriva para su retiro en local o se entrega al repartidor respectivo con estado en camino.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- NEW ORDER MODAL -->
+    <div id="modal-nuevo-pedido" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4" style="display:none;">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl p-6 relative">
+            <h3 class="text-lg font-bold text-sabor-navy mb-4">Ingresar una Comanda Nueva</h3>
+            
+            <form id="form-comanda-nueva" class="space-y-4" onsubmit="event.preventDefault(); agregarComanda();">
+                <div>
+                    <label class="block text-xs font-bold text-sabor-slate mb-1">Nombre del Cliente</label>
+                    <input id="comp-cliente" type="text" required placeholder="Ej. Ricardo Montaner, Mesa 5..." class="w-full rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary text-sm"/>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-sabor-slate mb-1">Tipo de Entrega</label>
+                        <select id="comp-tipo" class="w-full rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary text-sm">
+                            <option value="delivery">A Domicilio</option>
+                            <option value="pickup">Para Recoger</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-sabor-slate mb-1">Monto Total ($)</label>
+                        <input id="comp-monto" type="number" step="0.01" min="1" required placeholder="45.50" class="w-full rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary text-sm"/>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-sabor-slate mb-1">Origen / Dirección / Mesa</label>
+                    <input id="comp-origen" type="text" required placeholder="Ej. Calle Principal 123 o Mesa 8" class="w-full rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary text-sm"/>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-sabor-slate mb-1">Productos / Items</label>
+                    <textarea id="comp-items" rows="2" required placeholder="Ej. 1x Pizza Margherita, 2x Papas" class="w-full rounded-lg border-gray-200 focus:border-sabor-primary focus:ring-sabor-primary text-sm"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="document.getElementById('modal-nuevo-pedido').style.display='none';" class="px-4 py-2 text-sm font-semibold text-sabor-slate hover:text-sabor-navy">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-sabor-primary text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-red-800 transition">
+                        Guardar Comanda
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Micro-notification toaster -->
+    <div id="toast-container" class="fixed bottom-24 right-4 z-50 flex flex-col gap-2 max-w-sm"></div>
+
+    <!-- Bottom Navigation Bar (Functional Router for screens) -->
+    <!-- Applies Tailwind hover states and active indicators dynamically -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-150 py-2 shadow-2xl z-40">
+        <div class="max-w-md mx-auto flex justify-around items-center px-4">
+            <!-- Nav Item 1: Dashboard -->
+            <button id="nav-dashboard" onclick="routerSwitch('dashboard')" class="flex flex-col items-center justify-center text-sabor-primary px-3 py-1.5 rounded-xl transition duration-150 active:scale-90 select-none group">
+                <span class="material-symbols-outlined group-hover:scale-110 transition shrink-0">dashboard</span>
+                <span class="text-[11px] font-bold mt-0.5">Dashboard</span>
+            </button>
+
+            <!-- Nav Item 2: Clientes -->
+            <button id="nav-menu" onclick="routerSwitch('menu')" class="flex flex-col items-center justify-center text-sabor-slate hover:text-sabor-success px-3 py-1.5 rounded-xl transition duration-150 active:scale-90 select-none group">
+                <span class="material-symbols-outlined group-hover:scale-110 transition shrink-0">group</span>
+                <span class="text-[11px] font-bold mt-0.5">Clientes</span>
+            </button>
+
+            <!-- Nav Item 3: Pedidos -->
+            <button id="nav-metricas" onclick="routerSwitch('metricas')" class="flex flex-col items-center justify-center text-sabor-slate hover:text-sabor-primary px-3 py-1.5 rounded-xl transition duration-150 active:scale-90 select-none group">
+                <span class="material-symbols-outlined group-hover:scale-110 transition shrink-0">receipt_long</span>
+                <span class="text-[11px] font-bold mt-0.5">Pedidos</span>
+            </button>
+
+            <!-- Nav Item 4: Cocina -->
+            <button id="nav-ajustes" onclick="routerSwitch('ajustes')" class="flex flex-col items-center justify-center text-sabor-slate hover:text-sabor-success px-3 py-1.5 rounded-xl transition duration-150 active:scale-90 select-none group">
+                <span class="material-symbols-outlined group-hover:scale-110 transition shrink-0">restaurant</span>
+                <span class="text-[11px] font-bold mt-0.5">Cocina</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- JavaScript - Dynamic state and actions embed -->
+    <script>
+        /=========================================
+        /* LÓGICA DE DATOS & GESTIÓN DE ESTADO
+        /*
+        /* Crea un objeto estadoApp en JavaScript que contenga: 
+        /* pedidosTotales, aDomicilio, paraRecoger, objetivoDiario y pedidosFinalizados.
+        /*=========================================*/
+        
+        // --- ADVERTENCIA IMPORTANTE ---
+        // CRITICAL NOTE: Cambia el valor 'objetivoDiario: 48' de abajo por cualquier número entero 
+        // para ajustar la meta de pedidos en el Dashboard global.
+        const estadoApp = {
+            pedidosTotales: 0,
+            aDomicilio: 0,
+            paraRecoger: 0,
+            objetivoDiario: 48, // <-- MODIFICA ESTE VALOR para cambiar la meta diaria de comandas requeridas.
+            pedidosFinalizados: 0
+        };
+
+        // Arreglo de base inicial de comandas/pedidos
+        let listadoComandas = [
+            {
+                id: '#24891',
+                clienteNombre: 'Ricardo Montaner',
+                tipo: 'delivery',
+                monto: 45.50,
+                estado: 'En preparación',
+                origen: 'Av. Corrientes 1234, CABA',
+                items: '2x Hamburguesa Clásica, 1x Papas Grandes',
+                fecha: 'Hace 15 min'
+            },
+            {
+                id: '#24892',
+                clienteNombre: 'Claudia Schmitd',
+                tipo: 'pickup',
+                monto: 22.90,
+                estado: 'Pendiente',
+                origen: 'Retira en 15 minutos',
+                items: '1x Pizza Margherita, 1x Coca-Cola 500ml',
+                fecha: 'Hace 12 min'
+            },
+            {
+                id: '#24893',
+                clienteNombre: 'Julian Weich',
+                tipo: 'delivery',
+                monto: 112.00,
+                estado: 'Demorado',
+                origen: 'San Martin 456, Depto 4B',
+                items: '3x Tacos Al Pastor, 1x Agua de Jamaica',
+                fecha: 'Hace 10 min'
+            },
+            {
+                id: '#2489',
+                clienteNombre: 'Mesa 4 & Sabor',
+                tipo: 'pickup',
+                monto: 35.00,
+                estado: 'En preparación',
+                origen: 'Mesa 4',
+                items: '2x Hamburguesa Clásica, 1x Papas Grandes',
+                fecha: 'Hace 12 min',
+                urgente: true
+            },
+            {
+                id: '#2490',
+                clienteNombre: 'Para llevar en Local',
+                tipo: 'pickup',
+                monto: 18.20,
+                estado: 'Pendiente',
+                origen: 'Mostrador',
+                items: '1x Pizza Margherita, 1x Coca-Cola 500ml',
+                fecha: 'Hace 5 min'
+            },
+            {
+                id: '#2491',
+                clienteNombre: 'Rappi Delivery',
+                tipo: 'delivery',
+                monto: 24.50,
+                estado: 'En preparación',
+                origen: 'Moto reparto',
+                items: '3x Tacos Al Pastor, 1x Agua de Jamaica',
+                fecha: 'Hace 3 min'
+            },
+            {
+                id: '#2492',
+                clienteNombre: 'Mesa 12',
+                tipo: 'pickup',
+                monto: 32.00,
+                estado: 'Pendiente',
+                origen: 'Mesa 12',
+                items: '1x Ensalada César, 1x Salmón Grillé',
+                fecha: 'Recién hecho'
+            }
+        ];
+
+        // Clientes fijos de demostración
+        let listadoClientes = [
+            {
+                id: '#CL-9032',
+                nombre: 'Carlos Mendoza',
+                telefono: '+52 55 1234 5678',
+                email: 'carlos.m@email.com',
+                esVIP: true,
+                totalPedidos: 12,
+                ultimoPedido: 'Hace 2 días',
+                avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCqpTTdcNo8RyVmYsxnK2CgBItcrRSB9liAHxtP8n8bW59UjqYqSZnHNW8NNXG9hMBnHN4s4vfc8v9TXLZzWvfsIslPYLyVihzJoUY97hMOxDt7xUTmyXRXHYkLeSXrVLMeCI4Tcm_UZJaIADxzDthgH_NkCVRKVYKzNb5Ni4KZn9a1tLGYtsvGdEZjkUfzyucCmiyo_q4Skyup9CXc7YvkufDkqLkEVqSvnEH6nzTiTyvVTHzoTLyaLfDk02woLVCAn6MOD1RqWinq'
+            },
+            {
+                id: '#CL-8821',
+                nombre: 'Elena Rodriguez',
+                telefono: '+52 55 9876 5432',
+                email: 'elena.rod@email.com',
+                esVIP: false,
+                totalPedidos: 4,
+                ultimoPedido: 'Hace 1 semana',
+                avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfFGjzNctYtv1P5hFxOOVO9fQVmXfzSpks2fgVoCHE0Gzhg1XViC1s5y6xSeRr3y69-YMBeSYiR4__YMvCQj5sN3PqaT-iMp99PvxZRL9woLkCTYvFx4_1aP2BbUSqJ5Y46TD-04-zbgN2h3d-xdFQva5PyIUh5_hLU9xlO5Ct9AVFuYDK4vco3GR_GQyspY_20yBI-RmCLyoG_sCJIp23WV_OBU6dKI4aXNj94Qp3rlRAFwauhqRtO_XAFz-LCe_nLzi09IVuFN0q'
+            },
+            {
+                id: '#CL-7710',
+                nombre: 'Sergio Morales',
+                telefono: '+52 55 4433 2211',
+                email: 's.morales@corp.com',
+                esVIP: true,
+                totalPedidos: 28,
+                ultimoPedido: 'Hoy',
+                avatar: ''
+            }
+        ];
+
+        // Actividad Reciente log
+        let listadoActividades = [
+            { id: 1, desc: 'Pedido #4829 - Entregado con éxito', tiempo: 'Hace 5 min', monto: '$24.50', color: '#10B581' },
+            { id: 2, desc: 'Pedido #4830 - Ingresado en Cocina', tiempo: 'Hace 12 min', monto: '$18.20', color: '#A11548' },
+            { id: 3, desc: 'Nuevo comensal VIP Carlos Mendoza registrado', tiempo: 'Hace 18 min', monto: '', color: '#F6B828' }
+        ];
+
+        // Inicializador
+        window.addEventListener('DOMContentLoaded', () => {
+            // Sincronizar input de meta
+            document.getElementById('input-objetivo-diario').value = estadoApp.objetivoDiario;
+            
+            // Event listener para actualizar meta
+            document.getElementById('btn-actualizar-objetivo').addEventListener('click', () => {
+                const nuevoValor = parseInt(document.getElementById('input-objetivo-diario').value);
+                if (nuevoValor > 0) {
+                    estadoApp.objetivoDiario = nuevoValor;
+                    actualizarDashboard();
+                    createToast('Objetivo diario actualizado a ' + nuevoValor + ' comandas.', 'sabor-success');
+                }
+            });
+
+            // Input filter para clientes
+            document.getElementById('search-clientes').addEventListener('input', (event) => {
+                const busqueda = event.target.value.toLowerCase();
+                renderizarClientes(busqueda);
+            });
+
+            // Cargas iniciales
+            actualizarDashboard();
+            renderizarClientes();
+            renderizarPedidosActivos();
+            renderizarCocina();
+        });
+
+        /*=========================================
+        /* RECALCULOS & ACTUALIZACIÓN DEL DASHBOARD
+        /*
+        /* Implementa funciones actualizarDashboard() que recalculen automáticamente 
+        /* los totales y el porcentaje de la barra de progreso.
+        /*=========================================*/
+        function actualizarDashboard() {
+            // Filtrar las comandas que no estén Canceladas
+            const activasYCompletas = listadoComandas.filter(c => c.estado !== 'Cancelado');
+            
+            // Recálculo del estadoApp
+            estadoApp.pedidosTotales = activasYCompletas.length;
+            estadoApp.aDomicilio = activasYCompletas.filter(c => c.tipo === 'delivery').length;
+            estadoApp.paraRecoger = activasYCompletas.filter(c => c.tipo === 'pickup').length;
+            estadoApp.pedidosFinalizados = listadoComandas.filter(c => c.estado === 'Completado').length;
+
+            // Renderizado de números en la interfaz
+            document.getElementById('stat-pedidos-totales').innerText = estadoApp.pedidosTotales;
+            document.getElementById('stat-pedidos-finalizados').innerText = estadoApp.pedidosFinalizados;
+            document.getElementById('stat-a-domicilio').innerText = estadoApp.aDomicilio;
+            document.getElementById('stat-para-recoger').innerText = estadoApp.paraRecoger;
+
+            // Porcentaje de barra de progreso respecto al objetivo diario
+            const porcNum = Math.min(100, Math.round((estadoApp.pedidosFinalizados / estadoApp.objetivoDiario) * 100));
+            const pProg = document.getElementById('porcentaje-progreso');
+            const bProg = document.getElementById('barra-progreso');
+            const textComandas = document.getElementById('comandas-completas-texto');
+
+            pProg.innerText = porcNum + '%';
+            textComandas.innerText = `${estadoApp.pedidosFinalizados} de ${estadoApp.objetivoDiario} comandas finalizadas`;
+
+            // Aplicar estilo de barra de progreso
+            bProg.style.width = porcNum + '%';
+
+            /*=========================================
+            /* BARRA DE PROGRESO DINÁMICA
+            /*
+            /* Color de fondo dinámico (ej. verde menta cuando supere el 50% de cumplimiento).
+            /*=========================================*/
+            if (porcNum > 50) {
+                // Verde menta (#10B581)
+                bProg.style.backgroundColor = '#10B581';
+                pProg.style.color = '#10B581';
+            } else {
+                // Burgundy (#A11548) o Warning (#F6B828)
+                bProg.style.backgroundColor = '#A11548';
+                pProg.style.color = '#A11548';
+            }
+
+            renderHistorialActividad();
+        }
+
+        // Render logs de actividad
+        function renderHistorialActividad() {
+            const listContainer = document.getElementById('historial-actividad');
+            listContainer.innerHTML = '';
+
+            listadoActividades.forEach(act => {
+                const card = document.createElement('div');
+                card.className = 'flex items-center gap-4 py-3.5 hover:bg-gray-50/50 transition duration-150 px-2 rounded-lg';
+                card.innerHTML = `
+                    <div class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${act.color || '#A11548'}"></div>
+                    <div class="flex-grow">
+                        <p class="text-sm font-semibold text-sabor-navy leading-tight">${act.desc}</p>
+                        <p class="text-xs text-sabor-slate mt-0.5">${act.tiempo}</p>
+                    </div>
+                    ${act.monto ? `<span class="text-sm font-bold text-sabor-navy font-mono">${act.monto}</span>` : ''}
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        // Renderizado de clientes VIP
+        function renderizarClientes(busqueda = '') {
+            const container = document.getElementById('lista-clientes-body');
+            container.innerHTML = '';
+
+            const filtrados = listadoClientes.filter(cl => 
+                cl.nombre.toLowerCase().includes(busqueda) || 
+                cl.email.toLowerCase().includes(busqueda) || 
+                cl.telefono.includes(busqueda)
+            );
+
+            if (filtrados.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-sabor-slate text-sm">
+                        No se encontraron clientes con la búsqueda "${busqueda}".
+                    </div>
+                `;
+                return;
+            }
+
+            filtrados.forEach(cl => {
+                const avatarContent = cl.avatar 
+                    ? `<img class="w-10 h-10 rounded-full object-cover border" src="${cl.avatar}" alt="${cl.nombre}"/>`
+                    : `<div class="w-10 h-10 rounded-full bg-red-150 flex items-center justify-center text-sabor-primary font-bold text-sm bg-pink-100">${cl.nombre.split(' ').map(n=>n[0]).join('')}</div>`;
+
+                const vipBadge = cl.esVIP 
+                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-100 text-sabor-primary">
+                        <span class="w-1 h-1 rounded-full bg-sabor-primary animate-pulse"></span> VIP
+                       </span>`
+                    : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-sabor-slate">Frecuente</span>`;
+
+                const row = document.createElement('div');
+                row.className = 'p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50 transition cursor-pointer';
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        ${avatarContent}
+                        <div>
+                            <p class="text-sm font-bold text-sabor-navy">${cl.nombre}</p>
+                            <p class="text-xs text-sabor-slate">ID del Cliente: ${cl.id}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs text-sabor-navy flex items-center gap-1"><span class="material-symbols-outlined text-sm text-sabor-slate">call</span> ${cl.telefono}</p>
+                        <p class="text-xs text-sabor-slate flex items-center gap-1"><span class="material-symbols-outlined text-sm text-sabor-slate">mail</span> ${cl.email}</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs text-sabor-navy font-bold">${cl.totalPedidos} Pedidos en Total</p>
+                            <p class="text-[10px] text-sabor-slate">Último: ${cl.ultimoPedido}</p>
+                        </div>
+                        ${vipBadge}
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        /*=========================================
+        /* INTERACTIVIDAD DE PEDIDOS ACTIVOS (PANTALLA 3)
+        /*=========================================*/
+        function renderizarPedidosActivos() {
+            const container = document.getElementById('contenedor-pedidos-activos');
+            container.innerHTML = '';
+
+            const pedidosActivos = listadoComandas.filter(c => c.estado !== 'Completado' && c.estado !== 'Cancelado');
+
+            if (pedidosActivos.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center py-16 flex flex-col items-center justify-center">
+                        <span class="material-symbols-outlined text-gray-400 text-5xl mb-3">restaurant</span>
+                        <h4 class="font-bold text-sabor-navy text-lg">Capacidad Total Disponible</h4>
+                        <p class="text-sm text-sabor-slate max-w-sm mt-1">
+                            Aún no hay comandas activas en esta jornada. Añade un nuevo pedido.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            pedidosActivos.forEach(ped => {
+                const badgeTipo = ped.tipo === 'delivery'
+                    ? `<span class="flex items-center gap-1 bg-amber-50 text-sabor-warning rounded-full px-2.5 py-1 text-xs font-semibold">
+                        <span class="material-symbols-outlined text-sm">local_shipping</span> Delivery
+                       </span>`
+                    : `<span class="flex items-center gap-1 bg-pink-50 text-sabor-primary rounded-full px-2.5 py-1 text-xs font-semibold">
+                        <span class="material-symbols-outlined text-sm">shopping_bag</span> Pickup
+                       </span>`;
+
+                const badgeEstado = getBadgeEstadoHtml(ped.estado);
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl border border-gray-150 p-6 shadow-xs relative overflow-hidden group hover:border-sabor-primary hover:shadow-md transition duration-200';
+                card.innerHTML = `
+                    <div class="absolute top-5 right-5 flex gap-1">
+                        <!-- Botón de Acción: Completar / Editar -->
+                        <button onclick="completarComanda('${ped.id}')" title="Marcar como listo/entregado" class="w-9 h-9 rounded-full bg-emerald-50 text-sabor-success hover:bg-sabor-success hover:text-white transition flex items-center justify-center active:scale-90">
+                            <span class="material-symbols-outlined text-sm font-bold">check</span>
+                        </button>
+                        <!-- Botón de Acción: Eliminar -->
+                        <button onclick="eliminarComanda('${ped.id}')" title="Cancelar Comanda" class="w-9 h-9 rounded-full bg-red-50 text-sabor-primary hover:bg-sabor-primary hover:text-white transition flex items-center justify-center active:scale-90">
+                            <span class="material-symbols-outlined text-sm font-bold">delete</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="text-xs font-mono font-bold px-2.5 py-1 text-sabor-primary bg-pink-50 rounded-lg">
+                            ${ped.id}
+                        </span>
+                        ${badgeTipo}
+                    </div>
+
+                    <div class="space-y-1 mb-5">
+                        <h4 class="font-bold text-lg text-sabor-navy">${ped.clienteNombre}</h4>
+                        <p class="text-xs text-sabor-slate flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">location_on</span>
+                            ${ped.origen}
+                        </p>
+                        <p class="text-xs text-sabor-slate pt-2 font-medium">Items: <span class="text-sabor-navy font-semibold">${ped.items}</span></p>
+                    </div>
+
+                    <div class="flex justify-between items-end border-t border-gray-100 pt-4">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-sabor-slate tracking-wider block">Total Neto</span>
+                            <span class="text-2xl font-black text-sabor-primary font-mono">$${ped.monto.toFixed(2)}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] uppercase font-bold text-sabor-slate tracking-wider block mb-1">Estado</span>
+                            ${badgeEstado}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Helper para badge de estado
+        function getBadgeEstadoHtml(estado) {
+            switch(estado) {
+                case 'Pendiente':
+                    return `<span class="bg-gray-150 text-sabor-navy border border-gray-200 px-3 py-1 rounded-full text-xs font-bold">Pendiente</span>`;
+                case 'En preparación':
+                    return `<span class="bg-amber-100 text-sabor-warning border border-amber-200 px-3 py-1 rounded-full text-xs font-bold">En cocina</span>`;
+                case 'Demorado':
+                    return `<span class="bg-red-100/70 text-sabor-primary border border-red-200 px-3 py-1 rounded-full text-xs font-bold animate-pulse">Demorado</span>`;
+                case 'Completado':
+                    return `<span class="bg-green-100 text-sabor-success border border-green-200 px-3 py-1 rounded-full text-xs font-bold">Entregado</span>`;
+                default:
+                    return `<span class="bg-gray-100 text-sabor-slate px-3 py-1 rounded-full text-xs">${estado}</span>`;
+            }
+        }
+
+        /*=========================================
+        /* INTERACTIVIDAD DE COCINA (PANTALLA 4)
+        /*=========================================*/
+        function renderizarCocina() {
+            const container = document.getElementById('contenedor-cocina');
+            container.innerHTML = '';
+
+            const cocinaPedidos = listadoComandas.filter(c => c.estado !== 'Completado' && c.estado !== 'Cancelado');
+
+            cocinaPedidos.forEach(ped => {
+                const badgeUrgent = ped.urgente || ped.estado === 'Demorado'
+                    ? `<span class="bg-sabor-primary text-white text-[9px] font-black tracking-widest px-2.5 py-0.5 rounded-full animate-pulse border border-red-600 block text-center">URGENTE</span>`
+                    : `<span class="bg-gray-100 text-sabor-slate text-[9px] font-extrabold tracking-widest px-2.5 py-0.5 rounded-full block text-center">NORMAL</span>`;
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl border border-gray-150 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition';
+                card.innerHTML = `
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center bg-pink-50/20">
+                        <div>
+                            <span class="text-sm font-mono font-extrabold text-sabor-primary">${ped.id}</span>
+                            <p class="text-[10px] text-sabor-slate">${ped.origen} • ${ped.fecha}</p>
+                        </div>
+                        ${badgeUrgent}
+                    </div>
+                    <div class="p-4 flex-grow space-y-2">
+                        <p class="text-xs font-bold text-sabor-navy">Cliente: ${ped.clienteNombre}</p>
+                        <p class="text-xs text-sabor-slate bg-gray-50 p-2 rounded border border-gray-100 font-mono">${ped.items}</p>
+                    </div>
+                    <div class="p-3 bg-gray-50 border-t border-gray-150 grid grid-cols-2 gap-2 text-center">
+                        <button onclick="completarComanda('${ped.id}')" class="bg-sabor-success hover:bg-emerald-700 text-white py-2 rounded-lg font-bold text-xs flex flex-col items-center justify-center gap-0.5 active:scale-95 transition">
+                            <span class="material-symbols-outlined text-sm font-bold">check_circle</span>
+                            Completado
+                        </button>
+                        <button onclick="marcarEnCamino('${ped.id}')" class="bg-sabor-slate hover:bg-sabor-navy text-white py-2 rounded-lg font-bold text-xs flex flex-col items-center justify-center gap-0.5 active:scale-95 transition">
+                            <span class="material-symbols-outlined text-sm font-bold">delivery_dining</span>
+                            En camino
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /*=========================================
+        /* COMPLETAR, CANCELAR Y EDITAR ACCIONES (REQUISITOS)
+        /*=========================================*/
+        function completarComanda(id) {
+            const index = listadoComandas.findIndex(c => c.id === id);
+            if (index !== -1) {
+                listadoComandas[index].estado = 'Completado';
+                
+                // Agregar acción al historial
+                listadoActividades.unshift({
+                    id: Date.now(),
+                    desc: `Pedido ${id} completado para ${listadoComandas[index].clienteNombre}`,
+                    tiempo: 'Hace un momento',
+                    monto: '$' + listadoComandas[index].monto.toFixed(2),
+                    color: '#10B581'
+                });
+
+                actualizarDashboard();
+                renderizarPedidosActivos();
+                renderizarCocina();
+                createToast(`Pedido ${id} completado con éxito.`, 'sabor-success');
+            }
+        }
+
+        function marcarEnCamino(id) {
+            const index = listadoComandas.findIndex(c => c.id === id);
+            if (index !== -1) {
+                listadoComandas[index].estado = 'En preparación';// keeping active
+                createToast(`Pedido ${id} asignado en ruta de reparto.`, 'sabor-warning');
+            }
+        }
+
+        function eliminarComanda(id) {
+            const index = listadoComandas.findIndex(c => c.id === id);
+            if (index !== -1) {
+                const comandaEliminada = listadoComandas[index];
+                
+                // Dispara cambio de estado (Cancelar)
+                listadoComandas[index].estado = 'Cancelado';
+
+                // Agregar acción al historial
+                listadoActividades.unshift({
+                    id: Date.now(),
+                    desc: `Pedido ${id} cancelado / eliminado`,
+                    tiempo: 'Hace un momento',
+                    monto: '',
+                    color: '#A11548'
+                });
+
+                actualizarDashboard();
+                renderizarPedidosActivos();
+                renderizarCocina();
+                createToast(`Pedido ${id} de ${comandaEliminada.clienteNombre} fue cancelado/eliminado.`, 'sabor-primary');
+            }
+        }
+
+        function agregarComanda() {
+            const clienteVal = document.getElementById('comp-cliente').value;
+            const tipoVal = document.getElementById('comp-tipo').value;
+            const montoVal = parseFloat(document.getElementById('comp-monto').value);
+            const origenVal = document.getElementById('comp-origen').value;
+            const itemsVal = document.getElementById('comp-items').value;
+
+            const nuevoId = '#' + (24890 + Math.floor(Math.random() * 900));
+
+            const nuevoPed = {
+                id: nuevoId,
+                clienteNombre: clienteVal,
+                tipo: tipoVal,
+                monto: montoVal,
+                estado: 'Pendiente',
+                origen: origenVal,
+                items: itemsVal,
+                fecha: 'Recién hecho'
+            };
+
+            listadoComandas.push(nuevoPed);
+
+            // Agregar al historial
+            listadoActividades.unshift({
+                id: Date.now(),
+                desc: `Comanda ${nuevoId} creada para ${clienteVal}`,
+                tiempo: 'Hace un momento',
+                monto: '$' + montoVal.toFixed(2),
+                color: '#F6B828'
+            });
+
+            // Cerrar modal y resetear form
+            document.getElementById('modal-nuevo-pedido').style.display = 'none';
+            document.getElementById('form-comanda-nueva').reset();
+
+            // Sincronizar
+            actualizarDashboard();
+            renderizarPedidosActivos();
+            renderizarCocina();
+            createToast(`Pedido ${nuevoId} creado con éxito.`, 'sabor-success');
+        }
+
+        function imprimirComandas() {
+            createToast("Preparando impresión de comandas activas...", "sabor-success");
+        }
+
+        /*=========================================
+        /* NAVEGACIÓN DE PANTALLAS (Router Básico)
+        /*
+        /* La barra inferior debe funcionar como un 'Router' básico, 
+        /* ocultando y mostrando los contenedores de las pantallas.
+        /*=========================================*/
+        function routerSwitch(screenId) {
+            // IDs de las views
+            const screens = {
+                'dashboard': 'screen-dashboard', /* Dashboard view */
+                'menu': 'screen-menu',           /* Clientes view */
+                'metricas': 'screen-metricas',   /* Pedidos view */
+                'ajustes': 'screen-ajustes'      /* Cocina view */
+            };
+
+            // Recorrer y ocultar/mostrar pantallas
+            Object.keys(screens).forEach(key => {
+                const el = document.getElementById(screens[key]);
+                if (key === screenId) {
+                    el.classList.remove('hidden-screen');
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                    }, 50);
+                } else {
+                    el.classList.add('hidden-screen');
+                }
+            });
+
+            // Actualizar estilo del ícono en la barra inferior (Efecto activo/hover)
+            const navItems = {
+                'dashboard': 'nav-dashboard',
+                'menu': 'nav-menu',
+                'metricas': 'nav-metricas',
+                'ajustes': 'nav-ajustes'
+            };
+
+            Object.keys(navItems).forEach(key => {
+                const navBtn = document.getElementById(navItems[key]);
+                if (key === screenId) {
+                    // Colores activos basados en el tema
+                    if (key === 'dashboard' || key === 'metricas') {
+                        navBtn.className = navBtn.className.replace('text-sabor-slate', 'text-sabor-primary').replace('hover:text-sabor-success', '').replace('hover:text-sabor-primary', '') + ' text-sabor-primary';
+                    } else {
+                        navBtn.className = navBtn.className.replace('text-sabor-slate', 'text-sabor-success').replace('hover:text-sabor-success', '').replace('hover:text-sabor-primary', '') + ' text-sabor-success';
+                    }
+                } else {
+                    // Restablecer inactivos
+                    navBtn.className = navBtn.className.replace('text-sabor-primary', 'text-sabor-slate').replace('text-sabor-success', 'text-sabor-slate');
+                }
+            });
+        }
+
+        // Helper: Toast alerts
+        function createToast(message, type) {
+            const toast = document.createElement('div');
+            let colorClase = 'bg-sabor-navy border-l-4 border-sabor-primary';
+            if (type === 'sabor-success') colorClase = 'bg-sabor-navy border-l-4 border-sabor-success';
+            if (type === 'sabor-warning') colorClase = 'bg-sabor-navy border-l-4 border-sabor-warning';
+
+            toast.className = `text-white px-5 py-4.5 rounded-xl shadow-2xl flex items-center gap-3 animate-fade-in text-xs font-bold leading-normal ${colorClase}`;
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-white text-lg">notifications_active</span>
+                <span>${message}</span>
+            `;
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>

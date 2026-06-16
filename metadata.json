@@ -1,0 +1,6 @@
+{
+  "name": "Sabor Directo",
+  "description": "Gestión interactiva y en tiempo real de pedidos, clientes y cocina con métricas de rendimiento y barra de progreso dinámica.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

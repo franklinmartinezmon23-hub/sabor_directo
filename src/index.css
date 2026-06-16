@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sabor-primary: #A11548;
+  --color-sabor-success: #10B581;
+  --color-sabor-warning: #F6B828;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --sabor-primary: #A11548;
+  --sabor-success: #10B581;
+  --sabor-warning: #F6B828;
+}
+
+/* Custom background animation and transition */
+.transition-all-custom {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
