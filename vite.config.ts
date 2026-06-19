@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     // Esta línea es la que permite que GitHub Pages cargue tus archivos
-    base: '/Proyecto-stitchai/', 
+    base: '/sabor_directo/', 
 
     plugins: [react(), tailwindcss()],
     
